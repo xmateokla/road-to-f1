@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { Driver, SeasonSummary } from '../types/f1';
 import { getTeamById } from '../data/f1Teams';
 import { simulateFullSeason, playF1AudioEffect } from '../utils/f1Simulator';
 import { OFFICIAL_TRACKS } from '../data/f1Tracks';
-import { OffseasonSillySeasonModal } from './OffseasonSillySeasonModal';
-import { OffseasonEngineeringModal } from './OffseasonEngineeringModal';
 import { Trophy, Play, Swords, MapPin } from 'lucide-react';
 
 interface CareerDashboardProps {
@@ -14,6 +12,8 @@ interface CareerDashboardProps {
   onAdvanceSeasonYear: () => void;
   careerHistory: SeasonSummary[];
   onAddSeasonHistory: (summary: SeasonSummary) => void;
+  onTriggerOffseasonContracts: () => void;
+  onTriggerOffseasonEngineering: () => void;
 }
 
 export const CareerDashboard: React.FC<CareerDashboardProps> = ({
@@ -23,10 +23,9 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
   onAdvanceSeasonYear,
   careerHistory,
   onAddSeasonHistory,
+  onTriggerOffseasonContracts,
+  onTriggerOffseasonEngineering,
 }) => {
-  const [showSillySeasonModal, setShowSillySeasonModal] = useState(false);
-  const [showEngineeringModal, setShowEngineeringModal] = useState(false);
-
   const currentTeam = getTeamById(driver.currentTeamId);
 
   const handleSimulateSeason = () => {
@@ -36,17 +35,12 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
     onUpdateDriver(result.updatedDriver);
     onAdvanceSeasonYear();
 
+    // Transition smoothly to inline offseason views (NO POPUPS, NO CUTOFF SCROLLBARS!)
     if (result.updatedDriver.contractYearsRemaining <= 0) {
-      setShowSillySeasonModal(true);
+      onTriggerOffseasonContracts();
     } else {
-      setShowEngineeringModal(true);
+      onTriggerOffseasonEngineering();
     }
-  };
-
-  const handleContractComplete = (updatedDriver: Driver) => {
-    onUpdateDriver(updatedDriver);
-    setShowSillySeasonModal(false);
-    setShowEngineeringModal(true);
   };
 
   return (
@@ -208,20 +202,6 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
           </div>
         )}
       </div>
-
-      {showSillySeasonModal && (
-        <OffseasonSillySeasonModal driver={driver} onSelectContract={handleContractComplete} />
-      )}
-
-      {showEngineeringModal && (
-        <OffseasonEngineeringModal
-          driver={driver}
-          onComplete={updatedDriver => {
-            onUpdateDriver(updatedDriver);
-            setShowEngineeringModal(false);
-          }}
-        />
-      )}
 
     </div>
   );

@@ -5,8 +5,16 @@ import { WelcomeScreen } from './components/WelcomeScreen';
 import { DriverCreator } from './components/DriverCreator';
 import { ApexMinigameScreen } from './components/ApexMinigameScreen';
 import { CareerDashboard } from './components/CareerDashboard';
+import { OffseasonContractView } from './components/OffseasonContractView';
+import { OffseasonEngineeringView } from './components/OffseasonEngineeringView';
 
-export type GamePhase = 'WELCOME' | 'DRIVER_CREATION' | 'APEX_MINIGAME' | 'SEASON_DASHBOARD';
+export type GamePhase = 
+  | 'WELCOME' 
+  | 'DRIVER_CREATION' 
+  | 'APEX_MINIGAME' 
+  | 'SEASON_DASHBOARD'
+  | 'OFFSEASON_CONTRACTS'
+  | 'OFFSEASON_ENGINEERING';
 
 export const App: React.FC = () => {
   const [phase, setPhase] = useState<GamePhase>('WELCOME');
@@ -73,6 +81,28 @@ export const App: React.FC = () => {
               onAdvanceSeasonYear={() => setSeasonYear(prev => prev + 1)}
               careerHistory={careerHistory}
               onAddSeasonHistory={summary => setCareerHistory(prev => [...prev, summary])}
+              onTriggerOffseasonContracts={() => setPhase('OFFSEASON_CONTRACTS')}
+              onTriggerOffseasonEngineering={() => setPhase('OFFSEASON_ENGINEERING')}
+            />
+          )}
+
+          {phase === 'OFFSEASON_CONTRACTS' && driver && (
+            <OffseasonContractView
+              driver={driver}
+              onSelectContract={(updatedDriver) => {
+                setDriver(updatedDriver);
+                setPhase('OFFSEASON_ENGINEERING');
+              }}
+            />
+          )}
+
+          {phase === 'OFFSEASON_ENGINEERING' && driver && (
+            <OffseasonEngineeringView
+              driver={driver}
+              onComplete={(updatedDriver) => {
+                setDriver(updatedDriver);
+                setPhase('SEASON_DASHBOARD');
+              }}
             />
           )}
         </main>
