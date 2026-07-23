@@ -25,6 +25,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
   const [showSillySeasonModal, setShowSillySeasonModal] = useState(false);
 
   const currentTeam = getTeamById(driver.currentTeamId);
+  const championshipsCount = careerHistory.filter(s => s.championshipRank === 1).length;
 
   const handleSimulateSeason = () => {
     playF1AudioEffect('engine_rev');
@@ -52,13 +53,18 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
       <div className="game-card-panel border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-2xl holographic-edge">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           
-          {/* Left: Driver Identity */}
+          {/* Left: Driver Identity with 3D F1 Helmet Asset */}
           <div className="flex items-center gap-4">
-            <div 
-              className="w-16 h-16 rounded-full border-4 flex items-center justify-center text-3xl shadow-xl flex-shrink-0"
-              style={{ borderColor: driver.helmetColor, backgroundColor: `${driver.helmetColor}30` }}
-            >
-              🪖
+            <div className="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
+              <div 
+                className="absolute inset-0 rounded-full border-2 shadow-xl blur-[4px] opacity-70"
+                style={{ borderColor: driver.helmetColor, backgroundColor: driver.helmetColor }}
+              />
+              <img 
+                src="./assets/f1_racing_helmet.png" 
+                alt="F1 Helmet" 
+                className="w-14 h-14 object-contain relative z-10 drop-shadow-xl"
+              />
             </div>
 
             <div className="space-y-1">
@@ -84,8 +90,18 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
             </div>
           </div>
 
-          {/* Right: Telemetry Badges */}
+          {/* Right: Telemetry Badges & Trophy Cabinet */}
           <div className="flex items-center gap-3">
+            {championshipsCount > 0 && (
+              <div className="bg-amber-950/40 border border-amber-500/50 px-3 py-1.5 rounded-2xl flex items-center gap-2">
+                <img src="./assets/f1_podium_trophy.png" alt="Trophy" className="w-6 h-6 object-contain" />
+                <div>
+                  <div className="text-[8px] text-amber-400 font-bold uppercase">CAMPEONATOS</div>
+                  <div className="font-display font-black text-lg text-amber-300 leading-none">{championshipsCount}</div>
+                </div>
+              </div>
+            )}
+
             <div className="bg-slate-950 border border-slate-800 px-4 py-2 rounded-2xl text-center">
               <div className="text-[9px] text-slate-400 font-bold uppercase">RATING OVR</div>
               <div className="font-display font-black text-2xl text-emerald-400 leading-none">{driver.overallRating}</div>

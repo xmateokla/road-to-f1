@@ -114,7 +114,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
               <span>PASO {step} DE 2 • ROAD TO F1 CREATOR SUITE</span>
             </div>
             <h1 className="font-display text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">
-              {step === 1 && '1. IDENTIDAD, NÚMERO & ACADEMIA DE F1'}
+              {step === 1 && '1. IDENTIDAD, DORSAL & ACADEMIA FIA'}
               {step === 2 && '2. TELEMETRÍA, ATRIBUTOS Y CATEGORÍA INICIAL'}
             </h1>
           </div>
@@ -188,7 +188,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-slate-300 uppercase">COLOR DE CASCO</label>
+                    <label className="text-[11px] font-bold text-slate-300 uppercase">COLOR DEL CASCO</label>
                     <input
                       type="color"
                       value={helmetColor}
@@ -200,18 +200,24 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
 
               </div>
 
-              {/* Right Helmet Preview Card */}
-              <div className="lg:col-span-5 flex flex-col items-center justify-center game-card-panel rounded-3xl p-6 border border-slate-800 text-center space-y-3">
-                <div 
-                  className="w-24 h-24 rounded-full border-4 flex items-center justify-center text-4xl shadow-2xl transition-all"
-                  style={{ borderColor: helmetColor, backgroundColor: `${helmetColor}25` }}
-                >
-                  🪖
+              {/* Right REALISTIC 3D HELMET Asset Preview Card */}
+              <div className="lg:col-span-5 flex flex-col items-center justify-center game-card-panel rounded-3xl p-6 border border-slate-800 text-center space-y-4 relative overflow-hidden">
+                <div className="relative w-36 h-36 flex items-center justify-center">
+                  <div 
+                    className="absolute inset-0 rounded-full border-4 shadow-2xl transition-all blur-[6px] opacity-60"
+                    style={{ borderColor: helmetColor, backgroundColor: helmetColor }}
+                  />
+                  <img 
+                    src="./assets/f1_racing_helmet.png" 
+                    alt="Realistic F1 Racing Helmet"
+                    className="w-32 h-32 object-contain relative z-10 drop-shadow-2xl hover:scale-105 transition-all duration-300"
+                  />
                 </div>
+
                 <div>
                   <div className="font-display font-black text-2xl text-white">#{racingNumber} {name || 'TU PILOTO'}</div>
-                  <div className="text-xs text-slate-400 flex items-center justify-center gap-1.5 mt-1">
-                    <img src={country.flagUrl} alt={country.name} className="w-5 h-3.5 object-cover rounded" />
+                  <div className="text-xs text-slate-300 flex items-center justify-center gap-1.5 mt-1 font-semibold">
+                    <img src={country.flagUrl} alt={country.name} className="w-5 h-3.5 object-cover rounded shadow" />
                     <span>{country.name}</span>
                   </div>
                 </div>
