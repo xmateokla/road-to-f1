@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import type { Driver, SeasonSummary } from '../types/f1';
 import { getTeamById } from '../data/f1Teams';
 import { simulateFullSeason, playF1AudioEffect } from '../utils/f1Simulator';
+import { OFFICIAL_TRACKS } from '../data/f1Tracks';
 import { OffseasonSillySeasonModal } from './OffseasonSillySeasonModal';
 import { OffseasonEngineeringModal } from './OffseasonEngineeringModal';
-import { Trophy, Play, Swords } from 'lucide-react';
+import { Trophy, Play, Swords, MapPin } from 'lucide-react';
 
 interface CareerDashboardProps {
   driver: Driver;
@@ -116,6 +117,26 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
         <span>SIMULAR TEMPORADA {seasonYear} 🏎️💨</span>
         <Play className="w-5 h-5 fill-current" />
       </button>
+
+      {/* Official Wikimedia Circuits Showcase */}
+      <div className="game-card-panel rounded-2xl p-3.5 border border-slate-800 space-y-2 text-left">
+        <div className="flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase">
+          <MapPin className="w-4 h-4 text-amber-400" />
+          <span>CIRCUITOS OFICIALES FIA (WIKIMEDIA COMMONS)</span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 pt-1">
+          {OFFICIAL_TRACKS.slice(0, 4).map(tr => (
+            <div key={tr.id} className="bg-slate-950 p-2 rounded-xl border border-slate-800 flex items-center gap-2">
+              <img src={tr.circuitMapUrl} alt={tr.name} className="w-10 h-10 object-contain filter invert opacity-80" />
+              <div className="min-w-0 text-left">
+                <div className="font-bold text-white text-[10px] truncate">{tr.name}</div>
+                <div className="text-[8px] text-slate-400">{tr.country} • {tr.turnsCount} Curvas</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Seasons Feed */}
       <div className="space-y-3 pt-1">

@@ -1,108 +1,115 @@
 export interface TrackInfo {
   id: string;
   name: string;
-  location: string;
   country: string;
+  city: string;
   flagUrl: string;
+  circuitMapUrl: string;
   lengthKm: number;
-  cornersCount: number;
-  drsZonesCount: number;
-  tireWearSeverity: 'BAJA' | 'MEDIA' | 'ALTA' | 'EXTREMA';
-  rainProbability: number; // 0.0 to 1.0
+  turnsCount: number;
+  lapsCount: number;
+  rainProbability: number;
   isStreetCircuit: boolean;
-  keyChallenge: string;
-  icon: string;
+  drsZonesCount: number;
+  lapRecordTime: string;
+  lapRecordHolder: string;
 }
 
 export const OFFICIAL_TRACKS: TrackInfo[] = [
   {
     id: 'monaco',
     name: 'Circuit de Monaco',
-    location: 'Montecarlo',
     country: 'Mónaco',
+    city: 'Monte Carlo',
     flagUrl: 'https://flagcdn.com/w40/mc.png',
+    circuitMapUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Circuit_Monaco.svg/800px-Circuit_Monaco.svg.png',
     lengthKm: 3.337,
-    cornersCount: 19,
-    drsZonesCount: 1,
-    tireWearSeverity: 'BAJA',
+    turnsCount: 19,
+    lapsCount: 78,
     rainProbability: 0.25,
     isStreetCircuit: true,
-    keyChallenge: 'Cero margen de error. La clasificación a 1 vuelta decide el 90% de la carrera.',
-    icon: '🇲🇨',
+    drsZonesCount: 1,
+    lapRecordTime: '1:12.909',
+    lapRecordHolder: 'Lewis Hamilton',
   },
   {
     id: 'silverstone',
     name: 'Silverstone Circuit',
-    location: 'Northamptonshire',
     country: 'Reino Unido',
+    city: 'Silverstone',
     flagUrl: 'https://flagcdn.com/w40/gb.png',
+    circuitMapUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Silverstone_Circuit_2011.svg/800px-Silverstone_Circuit_2011.svg.png',
     lengthKm: 5.891,
-    cornersCount: 18,
-    drsZonesCount: 2,
-    tireWearSeverity: 'EXTREMA',
-    rainProbability: 0.45,
+    turnsCount: 18,
+    lapsCount: 52,
+    rainProbability: 0.40,
     isStreetCircuit: false,
-    keyChallenge: 'Curvas de altísima velocidad (Maggotts & Becketts). Desgaste brutal en el neumático delantero izquierdo.',
-    icon: '🇬🇧',
+    drsZonesCount: 2,
+    lapRecordTime: '1:27.097',
+    lapRecordHolder: 'Max Verstappen',
   },
   {
     id: 'spa',
     name: 'Circuit de Spa-Francorchamps',
-    location: 'Stavelot',
     country: 'Bélgica',
+    city: 'Stavelot',
     flagUrl: 'https://flagcdn.com/w40/be.png',
+    circuitMapUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Spa-Francorchamps_of_Belgium.svg/800px-Spa-Francorchamps_of_Belgium.svg.png',
     lengthKm: 7.004,
-    cornersCount: 19,
-    drsZonesCount: 2,
-    tireWearSeverity: 'ALTA',
-    rainProbability: 0.60,
+    turnsCount: 19,
+    lapsCount: 44,
+    rainProbability: 0.55,
     isStreetCircuit: false,
-    keyChallenge: 'Subida a Eau Rouge / Raidillon. Clima impredecible donde llueve en un sector y en otro está seco.',
-    icon: '🇧🇪',
+    drsZonesCount: 2,
+    lapRecordTime: '1:46.286',
+    lapRecordHolder: 'Valtteri Bottas',
   },
   {
     id: 'monza',
     name: 'Autodromo Nazionale Monza',
-    location: 'Monza',
     country: 'Italia',
+    city: 'Monza',
     flagUrl: 'https://flagcdn.com/w40/it.png',
+    circuitMapUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Autodromo_Nazionale_Monza_%282000%29.svg/800px-Autodromo_Nazionale_Monza_%282000%29.svg.png',
     lengthKm: 5.793,
-    cornersCount: 11,
-    drsZonesCount: 2,
-    tireWearSeverity: 'MEDIA',
+    turnsCount: 11,
+    lapsCount: 53,
     rainProbability: 0.20,
     isStreetCircuit: false,
-    keyChallenge: 'El Templo de la Velocidad. Alerones planos de mínima carga aerodinámica y frenadas salvajes en las Chicanes.',
-    icon: '🇮🇹',
+    drsZonesCount: 2,
+    lapRecordTime: '1:21.046',
+    lapRecordHolder: 'Rubens Barrichello',
   },
   {
     id: 'suzuka',
     name: 'Suzuka International Racing Course',
-    location: 'Mie',
     country: 'Japón',
+    city: 'Suzuka',
     flagUrl: 'https://flagcdn.com/w40/jp.png',
+    circuitMapUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Suzuka_circuit_map_2005.svg/800px-Suzuka_circuit_map_2005.svg.png',
     lengthKm: 5.807,
-    cornersCount: 18,
-    drsZonesCount: 1,
-    tireWearSeverity: 'EXTREMA',
+    turnsCount: 18,
+    lapsCount: 53,
     rainProbability: 0.35,
     isStreetCircuit: false,
-    keyChallenge: 'Trazado en forma de 8 con las Ese iniciales. Exige precisión rítmica absoluta.',
-    icon: '🇯🇵',
+    drsZonesCount: 1,
+    lapRecordTime: '1:30.983',
+    lapRecordHolder: 'Lewis Hamilton',
   },
   {
     id: 'interlagos',
     name: 'Autódromo José Carlos Pace (Interlagos)',
-    location: 'São Paulo',
     country: 'Brasil',
+    city: 'São Paulo',
     flagUrl: 'https://flagcdn.com/w40/br.png',
+    circuitMapUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_%28Interlagos%29_circuit_map.svg/800px-Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace_%28Interlagos%29_circuit_map.svg.png',
     lengthKm: 4.309,
-    cornersCount: 15,
-    drsZonesCount: 2,
-    tireWearSeverity: 'ALTA',
-    rainProbability: 0.55,
+    turnsCount: 15,
+    lapsCount: 71,
+    rainProbability: 0.50,
     isStreetCircuit: false,
-    keyChallenge: 'Sentido antihorario con tormentas tropicales repentinas. S de Senna icónica.',
-    icon: '🇧🇷',
+    drsZonesCount: 2,
+    lapRecordTime: '1:10.540',
+    lapRecordHolder: 'Valtteri Bottas',
   },
 ];
