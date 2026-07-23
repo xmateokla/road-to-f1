@@ -356,8 +356,32 @@ export const generateOffseasonContractOffers = (
       requiredSuperlicencePoints: 10,
       offerType: 'FACTORY_SEAT',
     });
-  } else {
-    // F2 or F1 -> Formula 1 Offers (Requires 40 Superlicence Points!)
+  } else if (currentCategory === 'FORMULA_2') {
+    // Always offer F2 renewals so driver is never stuck if they haven't reached 40 points yet!
+    offers.push({
+      id: 'off_f2_renew_prema',
+      teamId: 'f2_prema',
+      category: 'FORMULA_2',
+      salaryMillions: 1.0,
+      contractYears: 1,
+      roleStatus: 'PILOTO_NUMERO_1',
+      pitchText: 'Renovación en PREMA F2 para asegurar los Puntos de Superlicencia restantes antes del salto a F1.',
+      requiredSuperlicencePoints: 0,
+      offerType: 'FACTORY_SEAT',
+    });
+    offers.push({
+      id: 'off_f2_renew_art',
+      teamId: 'f2_art',
+      category: 'FORMULA_2',
+      salaryMillions: 0.8,
+      contractYears: 1,
+      roleStatus: 'PILOTO_NUMERO_1',
+      pitchText: 'ART Grand Prix te mantiene en F2 con contrato preferencial de desarrollo.',
+      requiredSuperlicencePoints: 0,
+      offerType: 'ACADEMY_PROMOTION',
+    });
+
+    // F1 Offers (Requires 40 Superlicence Points!)
     if (superlicence >= 40 || ovr >= 84) {
       offers.push({
         id: 'off_f1_redbull',
@@ -381,27 +405,50 @@ export const generateOffseasonContractOffers = (
         requiredSuperlicencePoints: 40,
         offerType: 'FACTORY_SEAT',
       });
+      offers.push({
+        id: 'off_f1_vcarb',
+        teamId: 'f1_vcarb',
+        category: 'FORMULA_1',
+        salaryMillions: 4.5,
+        contractYears: 2,
+        roleStatus: 'PROSPECTO_JUNIOR',
+        pitchText: 'Visa Cash App RB te ofrece tu debut oficial en la F1 en el equipo de Faenza.',
+        requiredSuperlicencePoints: 40,
+        offerType: 'ACADEMY_PROMOTION',
+      });
     }
-
+  } else {
+    // Formula 1 Drivers Offers
     offers.push({
-      id: 'off_f1_vcarb',
-      teamId: 'f1_vcarb',
+      id: 'off_f1_redbull_renew',
+      teamId: 'f1_redbull',
       category: 'FORMULA_1',
-      salaryMillions: 4.5,
-      contractYears: 2,
-      roleStatus: 'PROSPECTO_JUNIOR',
-      pitchText: 'Visa Cash App RB te ofrece tu debut oficial en la F1 en el equipo de Faenza.',
+      salaryMillions: 25.0,
+      contractYears: 3,
+      roleStatus: 'PILOTO_NUMERO_1',
+      pitchText: 'Red Bull Racing renueva tu contrato como Piloto Número 1 con salario de superestrella.',
       requiredSuperlicencePoints: 40,
-      offerType: 'ACADEMY_PROMOTION',
+      offerType: 'FACTORY_SEAT',
     });
     offers.push({
-      id: 'off_f1_williams',
-      teamId: 'f1_williams',
+      id: 'off_f1_ferrari_renew',
+      teamId: 'f1_ferrari',
       category: 'FORMULA_1',
-      salaryMillions: 3.8,
+      salaryMillions: 28.0,
+      contractYears: 3,
+      roleStatus: 'PILOTO_NUMERO_1',
+      pitchText: 'Scuderia Ferrari te renueva como el líder indiscutible en Maranello.',
+      requiredSuperlicencePoints: 40,
+      offerType: 'FACTORY_SEAT',
+    });
+    offers.push({
+      id: 'off_f1_mclaren_renew',
+      teamId: 'f1_mclaren',
+      category: 'FORMULA_1',
+      salaryMillions: 22.0,
       contractYears: 2,
-      roleStatus: 'SEGUNDO_PILOTO',
-      pitchText: 'James Vowles te propone sumarte al proyecto de reconstrucción de Williams Racing en F1.',
+      roleStatus: 'PILOTO_NUMERO_1',
+      pitchText: 'Andrea Stella te ofrece contrato en McLaren F1 Team con desarrollo de chasis prioritario.',
       requiredSuperlicencePoints: 40,
       offerType: 'FACTORY_SEAT',
     });
