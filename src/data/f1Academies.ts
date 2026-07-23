@@ -1,0 +1,87 @@
+import type { JuniorAcademy, JuniorAcademyId } from '../types/f1';
+
+export const JUNIOR_ACADEMIES_DATA: Record<JuniorAcademyId, JuniorAcademy> = {
+  red_bull: {
+    id: 'red_bull',
+    name: 'Red Bull Junior Team',
+    badge: '🐂 RED BULL JUNIOR',
+    logoUrl: 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Red_Bull_Racing_logo.svg/1200px-Red_Bull_Racing_logo.svg.png',
+    primaryColor: '#0600EF',
+    scoutBonusText: '+3 Adelantamientos & Agresividad (Exigencia de Helmut Marko)',
+    description: 'Programa exigente de ritmo infernal. Promoción directa a VCARB y Red Bull si rindes bajo presión.',
+    pressureLevel: 'EXTREMO',
+    attributeBoosts: {
+      racecraft: 3,
+      focusUnderPressure: 2,
+    },
+  },
+  ferrari: {
+    id: 'ferrari',
+    name: 'Ferrari Driver Academy (FDA)',
+    badge: '🐎 FERRARI FDA',
+    logoUrl: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Logo.svg/1200px-Ferrari-Logo.svg.png',
+    primaryColor: '#E8002D',
+    scoutBonusText: '+3 Clasificación a 1 Vuelta & Telemetría Maranello',
+    description: 'Entrenamiento en el simulador oficial de Maranello. Enfoque absoluto en la velocidad pura en clasificación.',
+    pressureLevel: 'ALTO',
+    attributeBoosts: {
+      qualifyingPace: 3,
+      consistency: 2,
+    },
+  },
+  mercedes: {
+    id: 'mercedes',
+    name: 'Mercedes Junior Team',
+    badge: '⭐️ MERCEDES JUNIOR',
+    logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Mercedes_AMG_Petronas_F1_Logo.svg/1200px-Mercedes_AMG_Petronas_F1_Logo.svg.png',
+    primaryColor: '#27F4D2',
+    scoutBonusText: '+3 Consistencia & Gestión de Neumáticos',
+    description: 'Metodología analítica de Toto Wolff. Preparación completa en gestión de neumáticos y estrategia.',
+    pressureLevel: 'ALTO',
+    attributeBoosts: {
+      tireManagement: 3,
+      consistency: 2,
+    },
+  },
+  mclaren: {
+    id: 'mclaren',
+    name: 'McLaren Driver Development',
+    badge: '🟠 MCLAREN JUNIOR',
+    logoUrl: 'https://upload.wikimedia.org/wikipedia/en/thumb/6/66/McLaren_Racing_logo.svg/1200px-McLaren_Racing_logo.svg.png',
+    primaryColor: '#FF8000',
+    scoutBonusText: '+3 Habilidad en Lluvia & Adaptabilidad',
+    description: 'Tradición británica de desarrollo de jóvenes talentos (Lewis Hamilton, Lando Norris).',
+    pressureLevel: 'MODERADO',
+    attributeBoosts: {
+      wetWeatherSkill: 3,
+      racecraft: 2,
+    },
+  },
+  alpine: {
+    id: 'alpine',
+    name: 'Alpine Academy',
+    badge: '🟦 ALPINE ACADEMY',
+    logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Alpine_F1_Team_Logo.svg/1200px-Alpine_F1_Team_Logo.svg.png',
+    primaryColor: '#0093CC',
+    scoutBonusText: '+3 Defensa Rueda a Rueda & Forma Física',
+    description: 'Formación intensiva en Enstone y Viry-Châtillon. Especialistas en combate de pelotón medio.',
+    pressureLevel: 'MODERADO',
+    attributeBoosts: {
+      fitness: 3,
+      racecraft: 2,
+    },
+  },
+  privateer: {
+    id: 'privateer',
+    name: 'Piloto Privado Independiente',
+    badge: '💰 PATROCINIO PRIVADO',
+    logoUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+    primaryColor: '#F59E0B',
+    scoutBonusText: '+$2.5M USD Presupuesto Inicial de Patrocinadores Familiares',
+    description: 'Sin la presión de una marca oficial, pero pagas tu propio asiento en los mejores equipos.',
+    pressureLevel: 'MODERADO',
+    attributeBoosts: {
+      focusUnderPressure: 1,
+    },
+  },
+};
