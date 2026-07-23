@@ -35,7 +35,6 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
     onUpdateDriver(result.updatedDriver);
     onAdvanceSeasonYear();
 
-    // Transition smoothly to inline offseason views (NO POPUPS, NO CUTOFF SCROLLBARS!)
     if (result.updatedDriver.contractYearsRemaining <= 0) {
       onTriggerOffseasonContracts();
     } else {
@@ -54,7 +53,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
               className="absolute inset-0 rounded-full border-2 blur-[3px] opacity-70"
               style={{ borderColor: driver.helmetColor, backgroundColor: driver.helmetColor }}
             />
-            <img src="./assets/f1_racing_helmet.png" alt="F1 Helmet" className="w-12 h-12 object-contain relative z-10 drop-shadow-xl" />
+            <img src="assets/f1_racing_helmet.png" alt="F1 Helmet" className="w-12 h-12 object-contain relative z-10 drop-shadow-xl" />
           </div>
 
           <div className="space-y-0.5 text-left flex-1 min-w-0">

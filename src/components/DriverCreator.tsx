@@ -119,7 +119,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                 className="absolute inset-0 rounded-full border-2 blur-[4px] opacity-70"
                 style={{ borderColor: helmetColor, backgroundColor: helmetColor }}
               />
-              <img src="./assets/f1_racing_helmet.png" alt="3D F1 Helmet" className="w-20 h-20 object-contain relative z-10 drop-shadow-xl" />
+              <img src="assets/f1_racing_helmet.png" alt="3D F1 Helmet" className="w-20 h-20 object-contain relative z-10 drop-shadow-xl" />
             </div>
 
             <div className="text-left space-y-1">
