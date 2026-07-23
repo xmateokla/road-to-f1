@@ -27,13 +27,6 @@ export const playF1AudioEffect = (type: 'engine_rev' | 'pitstop' | 'cheer' | 'ra
       gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
       osc.start();
       osc.stop(ctx.currentTime + 0.15);
-    } else if (type === 'radio_static') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, ctx.currentTime);
-      gain.gain.setValueAtTime(0.1, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.3);
     } else {
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(440, ctx.currentTime);
@@ -48,13 +41,13 @@ export const playF1AudioEffect = (type: 'engine_rev' | 'pitstop' | 'cheer' | 'ra
 // Calculate Overall Rating (OVR)
 export const calculateDriverRating = (driver: Partial<Driver>): number => {
   const attrs = driver.attributes || {
-    qualifyingPace: 70,
-    racecraft: 70,
-    tireManagement: 70,
-    wetWeatherSkill: 70,
-    consistency: 70,
-    focusUnderPressure: 70,
-    fitness: 70,
+    qualifyingPace: 65,
+    racecraft: 65,
+    tireManagement: 65,
+    wetWeatherSkill: 65,
+    consistency: 65,
+    focusUnderPressure: 65,
+    fitness: 65,
   };
 
   const weights = {
@@ -72,10 +65,10 @@ export const calculateDriverRating = (driver: Partial<Driver>): number => {
     rating += (attrs[key as keyof typeof attrs] || 50) * weights[key as keyof typeof weights];
   }
 
-  return Math.min(99, Math.max(60, Math.round(rating)));
+  return Math.min(99, Math.max(55, Math.round(rating)));
 };
 
-// SIMULATE A SINGLE GRAND PRIX RACE WEEKEND
+// SIMULATE A SINGLE GRAND PRIX RACE WEEKEND WITH REALISTIC MOTORSPORT PHYSICS
 export const simulateRaceWeekend = (
   driver: Driver,
   team: F1Team,
@@ -85,14 +78,14 @@ export const simulateRaceWeekend = (
   const driverRating = driver.overallRating;
   const carPerformance = team.carPerformanceIndex;
 
-  // Combine Driver Skill (40%) and Car Performance (60%) for realistic hierarchy
-  let combinedPace = (driverRating * 0.40) + (carPerformance * 0.60);
+  // REALISTIC MOTORSPORT PHYSICS: Car Downforce & Engine account for 70%, Driver Skill for 30%
+  let combinedPace = (driverRating * 0.30) + (carPerformance * 0.70);
 
-  // Apex Minigame Bonus (-2 to +4 positions impact)
+  // Apex Minigame Bonus (-2 to +3 positions impact)
   if (apexMinigameScore !== null) {
-    if (apexMinigameScore >= 90) combinedPace += 4;
-    else if (apexMinigameScore >= 75) combinedPace += 2;
-    else combinedPace -= 3;
+    if (apexMinigameScore >= 90) combinedPace += 3;
+    else if (apexMinigameScore >= 75) combinedPace += 1.5;
+    else combinedPace -= 2.5;
   }
 
   // Weather Roll
@@ -102,14 +95,17 @@ export const simulateRaceWeekend = (
     : 'SECO';
 
   if (weather !== 'SECO') {
-    // Wet weather skill gives massive advantage in rain
-    const wetBonus = (driver.attributes.wetWeatherSkill - 70) * 0.15;
+    // Wet weather skill allows great drivers to equalize inferior cars in rain!
+    const wetBonus = (driver.attributes.wetWeatherSkill - 70) * 0.25;
     combinedPace += wetBonus;
   }
 
-  // DNF Risk (Street circuits + low consistency)
+  // DNF Risk
   const dnfRisk = (track.isStreetCircuit ? 0.08 : 0.03) + (driver.attributes.consistency < 65 ? 0.05 : 0);
   const isDnf = Math.random() < dnfRisk;
+
+  // Teammate pace calculation
+  const teammatePace = (team.teammateOvr * 0.30) + (carPerformance * 0.70) + (Math.random() * 4 - 2);
 
   if (isDnf) {
     const reasons = [
@@ -124,6 +120,8 @@ export const simulateRaceWeekend = (
       flagUrl: track.flagUrl,
       gridPosition: Math.min(20, Math.max(1, Math.round(21 - (combinedPace / 5)))),
       raceFinishPosition: 20,
+      teammateGridPosition: Math.min(20, Math.max(1, Math.round(21 - (teammatePace / 5)))),
+      teammateFinishPosition: Math.min(20, Math.max(1, Math.round(21 - (teammatePace / 5.2)))),
       pointsScored: 0,
       fastestLap: false,
       podium: false,
@@ -135,28 +133,32 @@ export const simulateRaceWeekend = (
     };
   }
 
-  // Calculate Finish Position (1 to 20)
-  const totalFieldPace = combinedPace + (Math.random() * 12 - 6);
+  // Calculate Finish Position (1 to 20) against realistic grid pace
+  // TOP TIER teams (96-97 pace) fight for P1-P4; BACKMARKERS (71-74 pace) fight for P14-P20!
+  const totalFieldPace = combinedPace + (Math.random() * 8 - 4);
   let finishPos = Math.min(20, Math.max(1, Math.round(21.5 - (totalFieldPace / 4.8))));
+  let teammateFinishPos = Math.min(20, Math.max(1, Math.round(21.5 - (teammatePace / 4.8))));
 
   // F1 Points System (25, 18, 15, 12, 10, 8, 6, 4, 2, 1)
   const f1Points = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
   const pointsScored = finishPos <= 10 ? f1Points[finishPos - 1] : 0;
   const isWin = finishPos === 1;
   const isPodium = finishPos <= 3;
-  const isFastestLap = isPodium && Math.random() < 0.35;
+  const isFastestLap = isPodium && Math.random() < 0.25;
 
   let story = `P3 en la parrilla. Carrera sólida finalizando en P${finishPos}.`;
-  if (isWin) story = `🏆 ¡VICTORIA ESPECTACULAR EN ${track.name.toUpperCase()}! Pilotaje de leyenda sin cometer errores.`;
-  else if (isPodium) story = `🍾 ¡PODIO! Subida al cajón tras una batalla feroz rueda a rueda.`;
-  else if (finishPos <= 10) story = `Puntos valiosos para el campeonato terminando en P${finishPos}.`;
+  if (isWin) story = `🏆 ¡VICTORIA HETEROICA EN ${track.name.toUpperCase()}! Derrotaste a los favoritos de la parrilla.`;
+  else if (isPodium) story = `🍾 ¡PODIO GLORIOSO! Subida al cajón tras superar a ${team.teammateName}.`;
+  else if (finishPos <= 10) story = `Puntos valiosos para el equipo terminando en P${finishPos}.`;
 
   return {
     trackName: track.name,
     country: track.country,
     flagUrl: track.flagUrl,
-    gridPosition: Math.min(20, Math.max(1, Math.round(finishPos + (Math.random() * 4 - 2)))),
+    gridPosition: Math.min(20, Math.max(1, Math.round(finishPos + (Math.random() * 3 - 1.5)))),
     raceFinishPosition: finishPos,
+    teammateGridPosition: Math.min(20, Math.max(1, Math.round(teammateFinishPos + (Math.random() * 3 - 1.5)))),
+    teammateFinishPosition: teammateFinishPos,
     pointsScored,
     fastestLap: isFastestLap,
     podium: isPodium,
@@ -167,7 +169,7 @@ export const simulateRaceWeekend = (
   };
 };
 
-// SIMULATE A FULL SEASON (14-22 RACES)
+// SIMULATE A FULL SEASON (10-22 RACES)
 export const simulateFullSeason = (
   driver: Driver,
   seasonYear: number
@@ -180,7 +182,6 @@ export const simulateFullSeason = (
   const currentCategory = driver.currentTier;
   const team = getTeamById(driver.currentTeamId);
 
-  // Determine race count by category
   const totalRaces = currentCategory === 'FORMULA_1' ? 22 : currentCategory === 'FORMULA_2' ? 14 : 10;
 
   let totalPoints = 0;
@@ -188,6 +189,8 @@ export const simulateFullSeason = (
   let podiums = 0;
   let poles = 0;
   let fastestLaps = 0;
+  let teammateH2hWins = 0;
+  let teammateH2hPoles = 0;
 
   // Simulate individual races
   for (let r = 0; r < totalRaces; r++) {
@@ -199,24 +202,27 @@ export const simulateFullSeason = (
     if (res.podium) podiums++;
     if (res.gridPosition === 1) poles++;
     if (res.fastestLap) fastestLaps++;
+
+    if (res.raceFinishPosition < res.teammateFinishPosition) teammateH2hWins++;
+    if (res.gridPosition < res.teammateGridPosition) teammateH2hPoles++;
   }
 
-  // Calculate Championship Rank (1st = Champion, 2nd, etc.)
-  let rank = 12;
+  // Calculate Realistic Championship Rank based on Team Tier & Performance
+  let rank = 14;
   if (team.performanceTier === 'TOP_TIER') {
-    rank = totalPoints >= 280 ? 1 : totalPoints >= 220 ? 2 : 3;
+    rank = totalPoints >= 260 ? 1 : totalPoints >= 200 ? 2 : 3;
   } else if (team.performanceTier === 'UPPER_MIDFIELD') {
-    rank = totalPoints >= 220 ? 2 : totalPoints >= 160 ? 4 : 6;
+    rank = totalPoints >= 200 ? 2 : totalPoints >= 150 ? 4 : 6;
   } else if (team.performanceTier === 'MIDFIELD') {
-    rank = totalPoints >= 120 ? 6 : totalPoints >= 70 ? 8 : 10;
+    rank = totalPoints >= 100 ? 6 : totalPoints >= 60 ? 8 : 10;
   } else {
-    rank = totalPoints >= 40 ? 10 : 14;
+    rank = totalPoints >= 30 ? 10 : 16; // Backmarker teams fight for P12-P18
   }
 
-  // FIA Official Superlicence Points Allocation (3-Year Rolling Total)
+  // FIA Official Superlicence Points Allocation
   let superlicenceEarned = 0;
   if (currentCategory === 'FORMULA_2') {
-    if (rank === 1) superlicenceEarned = 40; // Direct F1 Eligibility!
+    if (rank === 1) superlicenceEarned = 40; // Champion gets direct F1 eligibility!
     else if (rank === 2) superlicenceEarned = 30;
     else if (rank === 3) superlicenceEarned = 20;
     else if (rank <= 5) superlicenceEarned = 10;
@@ -235,11 +241,11 @@ export const simulateFullSeason = (
 
   // Progression & Aging
   let ovrDelta = 0;
-  if (driver.age <= 20) ovrDelta = rank <= 3 ? 3 : 2;
-  else if (driver.age <= 26) ovrDelta = rank <= 3 ? 2 : 1;
+  if (driver.age <= 21) ovrDelta = rank <= 3 ? 3 : 2;
+  else if (driver.age <= 27) ovrDelta = rank <= 3 ? 2 : 1;
   else ovrDelta = -1;
 
-  const newOvr = Math.min(99, Math.max(60, driver.overallRating + ovrDelta));
+  const newOvr = Math.min(99, Math.max(55, driver.overallRating + ovrDelta));
 
   // Sync attributes with new OVR
   const updatedAttrs = { ...driver.attributes };
@@ -252,12 +258,12 @@ export const simulateFullSeason = (
 
   // Salary
   const salaryBase = currentCategory === 'FORMULA_1' 
-    ? (newOvr >= 92 ? 35.0 : newOvr >= 85 ? 18.0 : 6.0)
+    ? (newOvr >= 92 ? 35.0 : newOvr >= 85 ? 18.0 : 5.0)
     : (currentCategory === 'FORMULA_2' ? 0.8 : 0.2);
 
   let summaryBadge = 'Temporada Sólida';
   if (rank === 1) summaryBadge = `🏆 CAMPEÓN MUNDIAL DE ${currentCategory}`;
-  else if (podiums >= 5) summaryBadge = '🍾 Coleccionista de Podios';
+  else if (teammateH2hWins > totalRaces / 2) summaryBadge = `⚔️ Dominio H2H sobre ${team.teammateName}`;
 
   const summary: SeasonSummary = {
     year: seasonYear,
@@ -272,12 +278,14 @@ export const simulateFullSeason = (
     fastestLaps,
     championshipPoints: totalPoints,
     championshipRank: rank,
+    teammateH2hWins,
+    teammateH2hPoles,
     superlicencePointsEarned: superlicenceEarned,
     earnedSalaryMillions: salaryBase,
     summaryBadge,
     seasonNarrative: rank === 1 
       ? `¡TEMPORADA CONSAGRATORIA! Te coronas Campeón de ${currentCategory} tras dominar el campeonato.`
-      : `Finalizas P${rank} en el campeonato con ${totalPoints} puntos acumulados.`,
+      : `Finalizas P${rank} en el campeonato con ${totalPoints} PTS. Duelo de equipo: ${teammateH2hWins}/${totalRaces} victorias contra ${team.teammateName}.`,
   };
 
   const updatedDriver: Driver = {
@@ -298,7 +306,7 @@ export const simulateFullSeason = (
   };
 };
 
-// GENERATE SILLY SEASON CONTRACT OFFERS
+// GENERATE SILLY SEASON CONTRACT OFFERS WITH TEAMMATE H2H AND ACADEMY DEMANDS
 export const generateOffseasonContractOffers = (
   driver: Driver
 ): ContractOffer[] => {
@@ -309,7 +317,6 @@ export const generateOffseasonContractOffers = (
   const offers: ContractOffer[] = [];
 
   if (currentCategory === 'KARTS' || currentCategory === 'FORMULA_4') {
-    // Promotion to F3 Offers
     offers.push({
       id: 'off_f3_prema',
       teamId: 'f3_prema',
@@ -317,7 +324,7 @@ export const generateOffseasonContractOffers = (
       salaryMillions: 0.3,
       contractYears: 1,
       roleStatus: 'PILOTO_NUMERO_1',
-      pitchText: 'PREMA Racing te ofrece el asiento principal en FIA Formula 3. Monoplaza ganador de carreras.',
+      pitchText: 'PREMA Racing te ofrece el asiento en FIA F3. Monoplaza de 80 OVR para luchar arriba.',
       requiredSuperlicencePoints: 0,
       offerType: 'ACADEMY_PROMOTION',
     });
@@ -333,7 +340,6 @@ export const generateOffseasonContractOffers = (
       offerType: 'FACTORY_SEAT',
     });
   } else if (currentCategory === 'FORMULA_3') {
-    // Promotion to F2 Offers
     offers.push({
       id: 'off_f2_prema',
       teamId: 'f2_prema',
@@ -341,7 +347,7 @@ export const generateOffseasonContractOffers = (
       salaryMillions: 0.8,
       contractYears: 1,
       roleStatus: 'PILOTO_NUMERO_1',
-      pitchText: 'PREMA F2 te busca para su alineación titular. Último escalón antes de la Fórmula 1.',
+      pitchText: 'PREMA F2 te busca para su alineación titular. Penúltimo escalón antes de la F1.',
       requiredSuperlicencePoints: 12,
       offerType: 'ACADEMY_PROMOTION',
     });
@@ -357,7 +363,7 @@ export const generateOffseasonContractOffers = (
       offerType: 'FACTORY_SEAT',
     });
   } else if (currentCategory === 'FORMULA_2') {
-    // Always offer F2 renewals so driver is never stuck if they haven't reached 40 points yet!
+    // Offer F2 renewals
     offers.push({
       id: 'off_f2_renew_prema',
       teamId: 'f2_prema',
@@ -376,7 +382,7 @@ export const generateOffseasonContractOffers = (
       salaryMillions: 0.8,
       contractYears: 1,
       roleStatus: 'PILOTO_NUMERO_1',
-      pitchText: 'ART Grand Prix te mantiene en F2 con contrato preferencial de desarrollo.',
+      pitchText: 'ART Grand Prix te mantiene en F2 con contrato preferencial.',
       requiredSuperlicencePoints: 0,
       offerType: 'ACADEMY_PROMOTION',
     });
@@ -384,38 +390,40 @@ export const generateOffseasonContractOffers = (
     // F1 Offers (Requires 40 Superlicence Points!)
     if (superlicence >= 40 || ovr >= 84) {
       offers.push({
-        id: 'off_f1_redbull',
-        teamId: 'f1_redbull',
-        category: 'FORMULA_1',
-        salaryMillions: 12.0,
-        contractYears: 2,
-        roleStatus: 'PILOTO_NUMERO_1',
-        pitchText: 'Christian Horner te firma en Red Bull Racing. Monoplaza Campeón del Mundo (Top Tier).',
-        requiredSuperlicencePoints: 40,
-        offerType: 'FACTORY_SEAT',
-      });
-      offers.push({
-        id: 'off_f1_ferrari',
-        teamId: 'f1_ferrari',
-        category: 'FORMULA_1',
-        salaryMillions: 14.0,
-        contractYears: 3,
-        roleStatus: 'PILOTO_NUMERO_1',
-        pitchText: 'Frédéric Vasseur abre las puertas de Maranello. Conduce la Scuderia Ferrari en F1.',
-        requiredSuperlicencePoints: 40,
-        offerType: 'FACTORY_SEAT',
-      });
-      offers.push({
         id: 'off_f1_vcarb',
         teamId: 'f1_vcarb',
         category: 'FORMULA_1',
         salaryMillions: 4.5,
         contractYears: 2,
         roleStatus: 'PROSPECTO_JUNIOR',
-        pitchText: 'Visa Cash App RB te ofrece tu debut oficial en la F1 en el equipo de Faenza.',
+        pitchText: 'Visa Cash App RB te da el debut en F1. Formarás dupla con Yuki Tsunoda.',
         requiredSuperlicencePoints: 40,
         offerType: 'ACADEMY_PROMOTION',
       });
+      offers.push({
+        id: 'off_f1_williams',
+        teamId: 'f1_williams',
+        category: 'FORMULA_1',
+        salaryMillions: 3.8,
+        contractYears: 2,
+        roleStatus: 'SEGUNDO_PILOTO',
+        pitchText: 'James Vowles te propone sumarte al proyecto Williams Racing en F1 junto a Alex Albon.',
+        requiredSuperlicencePoints: 40,
+        offerType: 'FACTORY_SEAT',
+      });
+      if (ovr >= 88) {
+        offers.push({
+          id: 'off_f1_redbull',
+          teamId: 'f1_redbull',
+          category: 'FORMULA_1',
+          salaryMillions: 15.0,
+          contractYears: 2,
+          roleStatus: 'PILOTO_NUMERO_1',
+          pitchText: 'Christian Horner te firma en Red Bull Racing. Serás compañero de Max Verstappen.',
+          requiredSuperlicencePoints: 40,
+          offerType: 'FACTORY_SEAT',
+        });
+      }
     }
   } else {
     // Formula 1 Drivers Offers
@@ -426,7 +434,7 @@ export const generateOffseasonContractOffers = (
       salaryMillions: 25.0,
       contractYears: 3,
       roleStatus: 'PILOTO_NUMERO_1',
-      pitchText: 'Red Bull Racing renueva tu contrato como Piloto Número 1 con salario de superestrella.',
+      pitchText: 'Red Bull Racing te mantiene como líder con $25M USD/Año para batir a Verstappen.',
       requiredSuperlicencePoints: 40,
       offerType: 'FACTORY_SEAT',
     });
@@ -437,7 +445,7 @@ export const generateOffseasonContractOffers = (
       salaryMillions: 28.0,
       contractYears: 3,
       roleStatus: 'PILOTO_NUMERO_1',
-      pitchText: 'Scuderia Ferrari te renueva como el líder indiscutible en Maranello.',
+      pitchText: 'Scuderia Ferrari abre las puertas de Maranello con Charles Leclerc de compañero.',
       requiredSuperlicencePoints: 40,
       offerType: 'FACTORY_SEAT',
     });
@@ -448,7 +456,7 @@ export const generateOffseasonContractOffers = (
       salaryMillions: 22.0,
       contractYears: 2,
       roleStatus: 'PILOTO_NUMERO_1',
-      pitchText: 'Andrea Stella te ofrece contrato en McLaren F1 Team con desarrollo de chasis prioritario.',
+      pitchText: 'Andrea Stella te ofrece el monoplaza de Woking para competir junto a Lando Norris.',
       requiredSuperlicencePoints: 40,
       offerType: 'FACTORY_SEAT',
     });

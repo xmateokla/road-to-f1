@@ -37,13 +37,13 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
 
   // Custom Attributes State
   const [attributes, setAttributes] = useState<DriverAttributes>({
-    qualifyingPace: 72,
-    racecraft: 74,
-    tireManagement: 70,
-    wetWeatherSkill: 75,
-    consistency: 72,
-    focusUnderPressure: 70,
-    fitness: 75,
+    qualifyingPace: 68,
+    racecraft: 70,
+    tireManagement: 66,
+    wetWeatherSkill: 72,
+    consistency: 68,
+    focusUnderPressure: 66,
+    fitness: 70,
   });
 
   const liveOvr = calculateDriverRating({ attributes });
@@ -53,7 +53,6 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
     setAcademyId(id);
     playF1AudioEffect('pitstop');
     
-    // Apply academy boost preview
     const academy = JUNIOR_ACADEMIES_DATA[id];
     if (academy.attributeBoosts) {
       setAttributes(prev => ({
@@ -94,7 +93,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
       currentTeamId: defaultTeamId,
       superlicencePoints: 0,
       unlockedBadges: [selectedAcademy.badge],
-      investments: [],
+      engineeringUpgrades: [],
       contractYearsRemaining: 1,
       contractSalaryMillions: 0.3,
     };
@@ -322,7 +321,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                     <span className="text-amber-400 font-display text-lg">{attributes.qualifyingPace}</span>
                   </div>
                   <input
-                    type="range" min="50" max="85" value={attributes.qualifyingPace}
+                    type="range" min="50" max="80" value={attributes.qualifyingPace}
                     onChange={e => handleAttributeChange('qualifyingPace', parseInt(e.target.value))}
                     className="w-full accent-amber-400"
                   />
@@ -334,7 +333,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                     <span className="text-amber-400 font-display text-lg">{attributes.racecraft}</span>
                   </div>
                   <input
-                    type="range" min="50" max="85" value={attributes.racecraft}
+                    type="range" min="50" max="80" value={attributes.racecraft}
                     onChange={e => handleAttributeChange('racecraft', parseInt(e.target.value))}
                     className="w-full accent-amber-400"
                   />
@@ -346,7 +345,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                     <span className="text-amber-400 font-display text-lg">{attributes.tireManagement}</span>
                   </div>
                   <input
-                    type="range" min="50" max="85" value={attributes.tireManagement}
+                    type="range" min="50" max="80" value={attributes.tireManagement}
                     onChange={e => handleAttributeChange('tireManagement', parseInt(e.target.value))}
                     className="w-full accent-amber-400"
                   />
@@ -358,7 +357,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                     <span className="text-amber-400 font-display text-lg">{attributes.wetWeatherSkill}</span>
                   </div>
                   <input
-                    type="range" min="50" max="85" value={attributes.wetWeatherSkill}
+                    type="range" min="50" max="80" value={attributes.wetWeatherSkill}
                     onChange={e => handleAttributeChange('wetWeatherSkill', parseInt(e.target.value))}
                     className="w-full accent-amber-400"
                   />
@@ -370,7 +369,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                     <span className="text-amber-400 font-display text-lg">{attributes.consistency}</span>
                   </div>
                   <input
-                    type="range" min="50" max="85" value={attributes.consistency}
+                    type="range" min="50" max="80" value={attributes.consistency}
                     onChange={e => handleAttributeChange('consistency', parseInt(e.target.value))}
                     className="w-full accent-amber-400"
                   />
@@ -382,7 +381,7 @@ export const DriverCreator: React.FC<DriverCreatorProps> = ({ onComplete }) => {
                     <span className="text-amber-400 font-display text-lg">{attributes.focusUnderPressure}</span>
                   </div>
                   <input
-                    type="range" min="50" max="85" value={attributes.focusUnderPressure}
+                    type="range" min="50" max="80" value={attributes.focusUnderPressure}
                     onChange={e => handleAttributeChange('focusUnderPressure', parseInt(e.target.value))}
                     className="w-full accent-amber-400"
                   />

@@ -3,7 +3,8 @@ import type { Driver, SeasonSummary } from '../types/f1';
 import { getTeamById } from '../data/f1Teams';
 import { simulateFullSeason, playF1AudioEffect } from '../utils/f1Simulator';
 import { OffseasonSillySeasonModal } from './OffseasonSillySeasonModal';
-import { Trophy, Flame, Play } from 'lucide-react';
+import { OffseasonEngineeringModal } from './OffseasonEngineeringModal';
+import { Trophy, Flame, Play, Swords } from 'lucide-react';
 
 interface CareerDashboardProps {
   driver: Driver;
@@ -23,6 +24,7 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
   onAddSeasonHistory,
 }) => {
   const [showSillySeasonModal, setShowSillySeasonModal] = useState(false);
+  const [showEngineeringModal, setShowEngineeringModal] = useState(false);
 
   const currentTeam = getTeamById(driver.currentTeamId);
   const championshipsCount = careerHistory.filter(s => s.championshipRank === 1).length;
@@ -38,12 +40,15 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
 
     if (result.updatedDriver.contractYearsRemaining <= 0) {
       setShowSillySeasonModal(true);
+    } else {
+      setShowEngineeringModal(true);
     }
   };
 
   const handleContractComplete = (updatedDriver: Driver) => {
     onUpdateDriver(updatedDriver);
     setShowSillySeasonModal(false);
+    setShowEngineeringModal(true);
   };
 
   return (
@@ -118,6 +123,24 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* TEAMMATE H2H DUEL DISPLAY */}
+      <div className="game-card-panel rounded-3xl p-5 border border-slate-800 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Swords className="w-6 h-6 text-amber-400" />
+          <div>
+            <div className="text-xs text-slate-400 font-bold uppercase">DUELO DE EQUIPO TITULAR</div>
+            <div className="font-display font-black text-lg text-white">
+              Compañero de Garaje: <span className="text-amber-400">{currentTeam.teammateName} ({currentTeam.teammateOvr} OVR)</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-right">
+          <div className="text-[10px] text-slate-400 font-bold uppercase">CAR PERFORMANCE INDEX</div>
+          <div className="font-display font-black text-xl text-emerald-400">{currentTeam.carPerformanceIndex} OVR</div>
         </div>
       </div>
 
@@ -212,8 +235,8 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
                       <div className="font-display font-black text-2xl text-blue-400 leading-none">{season.podiums}</div>
                     </div>
                     <div>
-                      <div className="text-[10px] text-slate-400 font-bold uppercase">POLES</div>
-                      <div className="font-display font-black text-2xl text-purple-400 leading-none">{season.poles}</div>
+                      <div className="text-[10px] text-slate-400 font-bold uppercase">DUELO H2H</div>
+                      <div className="font-display font-black text-2xl text-purple-400 leading-none">{season.teammateH2hWins}/{season.racesPlayed}</div>
                     </div>
                     <div>
                       <div className="text-[10px] text-slate-400 font-bold uppercase">+SUPERLICENCIA</div>
@@ -236,6 +259,17 @@ export const CareerDashboard: React.FC<CareerDashboardProps> = ({
         <OffseasonSillySeasonModal
           driver={driver}
           onSelectContract={handleContractComplete}
+        />
+      )}
+
+      {/* MOTORSPORT OFFSEASON ENGINEERING MODAL */}
+      {showEngineeringModal && (
+        <OffseasonEngineeringModal
+          driver={driver}
+          onComplete={updatedDriver => {
+            onUpdateDriver(updatedDriver);
+            setShowEngineeringModal(false);
+          }}
         />
       )}
 

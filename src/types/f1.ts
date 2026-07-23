@@ -12,7 +12,7 @@ export type TeamPerformanceTier = 'TOP_TIER' | 'UPPER_MIDFIELD' | 'MIDFIELD' | '
 
 export interface DriverAttributes {
   qualifyingPace: number;     // 1-lap speed
-  racecraft: number;          // Wheel-to-wheel overtaking & defense
+  racecraft: number;          // Overtaking & wheel-to-wheel defense
   tireManagement: number;     // Preserving rubber over stint
   wetWeatherSkill: number;    // Reflexes & car control in rain
   consistency: number;        // Avoiding lockups, errors & track limits
@@ -38,6 +38,8 @@ export interface F1Team {
   engineSupplier: string;
   description: string;
   academyAffiliation?: JuniorAcademyId;
+  teammateName: string;
+  teammateOvr: number;
 }
 
 export interface JuniorAcademy {
@@ -50,6 +52,8 @@ export interface JuniorAcademy {
   description: string;
   pressureLevel: 'EXTREMO' | 'ALTO' | 'MODERADO';
   attributeBoosts: Partial<DriverAttributes>;
+  principalName: string;
+  seasonGoalText: string;
 }
 
 export interface SuperlicenceStats {
@@ -64,6 +68,8 @@ export interface RaceWeekendResult {
   flagUrl: string;
   gridPosition: number;
   raceFinishPosition: number;
+  teammateGridPosition: number;
+  teammateFinishPosition: number;
   pointsScored: number;
   fastestLap: boolean;
   podium: boolean;
@@ -87,6 +93,8 @@ export interface SeasonSummary {
   fastestLaps: number;
   championshipPoints: number;
   championshipRank: number; // 1st = Champion, 2nd, etc.
+  teammateH2hWins: number;  // Beat teammate in race
+  teammateH2hPoles: number; // Beat teammate in qualifying
   superlicencePointsEarned: number;
   earnedSalaryMillions: number;
   summaryBadge: string;
@@ -105,15 +113,14 @@ export interface ContractOffer {
   offerType: 'FACTORY_SEAT' | 'ACADEMY_PROMOTION' | 'PAY_DRIVER_SEAT';
 }
 
-export interface LifestyleInvestment {
+export interface EngineeringUpgrade {
   id: string;
   name: string;
-  category: 'performance' | 'lifestyle' | 'business';
-  tier: 1 | 2 | 3;
+  category: 'chassis' | 'aerodynamics' | 'power_unit' | 'simulator';
   costMillions: number;
-  annualIncomeMillions: number;
-  reputationBonus: number;
+  performanceBonus: number;
   attributeBoosts?: Partial<DriverAttributes>;
+  description: string;
   icon: string;
   bought: boolean;
 }
@@ -137,7 +144,7 @@ export interface Driver {
   currentTeamId: string;
   superlicencePoints: number;
   unlockedBadges: string[];
-  investments: LifestyleInvestment[];
+  engineeringUpgrades: EngineeringUpgrade[];
   contractYearsRemaining: number;
   contractSalaryMillions: number;
 }

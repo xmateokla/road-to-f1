@@ -14,6 +14,8 @@ export const JUNIOR_ACADEMIES_DATA: Record<JuniorAcademyId, JuniorAcademy> = {
       racecraft: 3,
       focusUnderPressure: 2,
     },
+    principalName: 'Helmut Marko',
+    seasonGoalText: 'Terminar en el Top 3 de tu campeonato obligatoriamente.',
   },
   ferrari: {
     id: 'ferrari',
@@ -28,6 +30,8 @@ export const JUNIOR_ACADEMIES_DATA: Record<JuniorAcademyId, JuniorAcademy> = {
       qualifyingPace: 3,
       consistency: 2,
     },
+    principalName: 'Jock Clear',
+    seasonGoalText: 'Derrotar a tu compañero de equipo en poles y clasificaciones.',
   },
   mercedes: {
     id: 'mercedes',
@@ -42,6 +46,8 @@ export const JUNIOR_ACADEMIES_DATA: Record<JuniorAcademyId, JuniorAcademy> = {
       tireManagement: 3,
       consistency: 2,
     },
+    principalName: 'Gwen Lagrue',
+    seasonGoalText: 'Maximizar puntos en tandas largas sin desgastar neumáticos.',
   },
   mclaren: {
     id: 'mclaren',
@@ -56,6 +62,8 @@ export const JUNIOR_ACADEMIES_DATA: Record<JuniorAcademyId, JuniorAcademy> = {
       wetWeatherSkill: 3,
       racecraft: 2,
     },
+    principalName: 'Emanuele Pirro',
+    seasonGoalText: 'Lograr podios constantes en todas las condiciones climáticas.',
   },
   alpine: {
     id: 'alpine',
@@ -70,6 +78,8 @@ export const JUNIOR_ACADEMIES_DATA: Record<JuniorAcademyId, JuniorAcademy> = {
       fitness: 3,
       racecraft: 2,
     },
+    principalName: 'Julian Rouse',
+    seasonGoalText: 'Superar la barrera de puntos del equipo titular.',
   },
   privateer: {
     id: 'privateer',
@@ -83,5 +93,7 @@ export const JUNIOR_ACADEMIES_DATA: Record<JuniorAcademyId, JuniorAcademy> = {
     attributeBoosts: {
       focusUnderPressure: 1,
     },
+    principalName: 'Sponsors Familiares',
+    seasonGoalText: 'Atraer la atención de una escudería oficial de F1.',
   },
 };
