@@ -95,80 +95,73 @@ export const OffseasonEngineeringModal: React.FC<OffseasonEngineeringModalProps>
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-xl animate-fadeIn overflow-y-auto">
-      <div className="bg-slate-950 border border-slate-800 rounded-3xl max-w-5xl w-full p-5 sm:p-8 space-y-6 shadow-2xl relative my-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/90 backdrop-blur-md animate-fadeIn overflow-y-auto">
+      <div className="bg-slate-950 border border-slate-800 rounded-3xl max-w-md w-full p-4 space-y-4 shadow-2xl relative my-auto">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-4 gap-3">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div>
-            <div className="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-1">
-              <Wrench className="w-4 h-4 text-amber-400" />
-              <span>OFFSEASON TELEMETRY & ENGINEERING SUITE 🏎️</span>
+            <div className="inline-flex items-center gap-1 bg-amber-500/15 text-amber-300 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+              <Wrench className="w-3 h-3 text-amber-400" />
+              <span>GARAGE & TELEMETRÍA 🏎️</span>
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-black text-white uppercase">
-              DESARROLLO DE MONOPLAZA & DEBRIEF DE EQUIPO
+            <h2 className="font-display font-black text-xl text-white uppercase">
+              DESARROLLO DE MONOPLAZA
             </h2>
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 px-4 py-2 rounded-2xl flex items-center gap-3">
-            <div>
-              <span className="text-[10px] text-slate-400 font-bold uppercase block">PRESUPUESTO DISPONIBLE</span>
-              <span className="font-display font-black text-xl text-emerald-400 leading-none">
-                ${currentDriver.earningsMillions.toFixed(1)}M USD
-              </span>
-            </div>
+          <div className="bg-slate-900 border border-slate-800 px-3 py-1 rounded-xl text-right">
+            <span className="text-[8px] text-slate-400 font-bold uppercase block">FONDOS</span>
+            <span className="font-display font-black text-sm text-emerald-400 leading-none">
+              ${currentDriver.earningsMillions.toFixed(1)}M
+            </span>
           </div>
         </div>
 
-        {/* TEAM PRINCIPAL DEBRIEF BOX */}
-        <div className="game-card-panel rounded-2xl p-4 border border-amber-500/30 bg-amber-950/20 space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🎙️</span>
-            <h4 className="font-display font-bold text-amber-300 text-sm uppercase">
-              DEBRIEF CON {team.teamPrincipal.toUpperCase()} ({team.name})
-            </h4>
-          </div>
-          <p className="text-xs text-slate-300 italic leading-relaxed">
-            "Tu rendimiento contra {team.teammateName} ha sido evaluado en telemetría. Invierte tu presupuesto en desarrollo aerodinámico para la próxima temporada."
+        {/* Debrief Box */}
+        <div className="bg-slate-900/80 p-3 rounded-xl border border-amber-500/30 text-left space-y-1">
+          <div className="text-[10px] font-bold text-amber-400 uppercase">🎙️ DEBRIEF: {team.teamPrincipal}</div>
+          <p className="text-[10px] text-slate-300 italic leading-snug">
+            "Invierte el presupuesto de patrocinadores en aerodinámica para batir a {team.teammateName}."
           </p>
         </div>
 
-        {/* UPGRADES GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Upgrades Single-Column */}
+        <div className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
           {upgrades.map(upg => (
             <div
               key={upg.id}
-              className={`game-card-panel rounded-3xl p-5 border text-left space-y-3 transition-all ${
+              className={`game-card-panel rounded-xl p-3 border text-left space-y-1.5 ${
                 upg.bought ? 'border-emerald-500/60 bg-emerald-950/20' : 'border-slate-800 bg-slate-900/60'
               }`}
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{upg.icon}</span>
-                  <h4 className="font-bold text-white text-base">{upg.name}</h4>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-lg">{upg.icon}</span>
+                  <h4 className="font-bold text-white text-xs">{upg.name}</h4>
                 </div>
-                <span className="text-xs font-bold text-emerald-400">${upg.costMillions}M USD</span>
+                <span className="text-xs font-bold text-emerald-400">${upg.costMillions}M</span>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed">{upg.description}</p>
+              <p className="text-[9px] text-slate-400 leading-snug">{upg.description}</p>
 
-              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+              <div className="pt-1 flex items-center justify-between">
                 {upg.bought ? (
-                  <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
-                    <CheckCircle className="w-4 h-4 text-emerald-400" />
-                    <span>MEJORA INSTALADA EN CHASIS</span>
+                  <span className="text-[10px] font-bold text-emerald-400 flex items-center gap-1">
+                    <CheckCircle className="w-3 h-3 text-emerald-400" />
+                    <span>INSTALADO EN CHASIS</span>
                   </span>
                 ) : (
                   <button
                     onClick={() => handleBuyUpgrade(upg)}
                     disabled={currentDriver.earningsMillions < upg.costMillions}
-                    className={`w-full font-display font-black text-xs uppercase py-2.5 rounded-xl transition-all ${
+                    className={`w-full font-display font-black text-[10px] uppercase py-2 rounded-lg ${
                       currentDriver.earningsMillions >= upg.costMillions
-                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 text-black shadow-lg'
-                        : 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed'
+                        ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-lg'
+                        : 'bg-slate-900 text-slate-600 border border-slate-800'
                     }`}
                   >
-                    {currentDriver.earningsMillions >= upg.costMillions ? 'COMPRAR MEJORA DE CHASIS 🔧' : 'FONDOS INSUFICIENTES'}
+                    {currentDriver.earningsMillions >= upg.costMillions ? 'MEJORAR CHASIS 🔧' : 'SIN FONDOS'}
                   </button>
                 )}
               </div>
@@ -177,13 +170,13 @@ export const OffseasonEngineeringModal: React.FC<OffseasonEngineeringModalProps>
         </div>
 
         {/* Footer */}
-        <div className="pt-3 border-t border-slate-800 flex justify-end">
+        <div className="pt-2 border-t border-slate-800 flex justify-end">
           <button
             onClick={handleFinishOffseason}
-            className="bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-600 hover:from-emerald-400 text-black font-display font-black text-base uppercase px-8 py-3.5 rounded-2xl shadow-xl shadow-emerald-500/20 active:scale-95 transition-all inline-flex items-center gap-2"
+            className="w-full bg-emerald-500 text-black font-display font-black text-xs uppercase py-3 rounded-xl shadow-lg inline-flex items-center justify-center gap-1"
           >
-            <span>CONCLUIR OFFSEASON Y CONTINUAR 🏎️</span>
-            <ArrowRight className="w-5 h-5" />
+            <span>CONTINUAR 🏎️</span>
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 

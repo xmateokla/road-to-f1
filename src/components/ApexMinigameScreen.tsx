@@ -55,7 +55,7 @@ export const ApexMinigameScreen: React.FC<ApexMinigameScreenProps> = ({ driver, 
   const handleContinue = () => {
     let ovrDelta = 0;
     if (score !== null) {
-      if (score >= 88 && score <= 96) ovrDelta = 2; // Perfect apex braking
+      if (score >= 88 && score <= 96) ovrDelta = 2;
       else if (score >= 70) ovrDelta = 1;
       else ovrDelta = -1;
     }
@@ -70,95 +70,68 @@ export const ApexMinigameScreen: React.FC<ApexMinigameScreenProps> = ({ driver, 
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-3 sm:p-6 my-2 sm:my-6">
-      <div className="game-card-panel border border-slate-800 rounded-3xl p-5 sm:p-8 shadow-2xl space-y-6 text-center holographic-edge">
-        
-        <div className="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-bold px-4 py-1.5 rounded-full uppercase">
-          <Zap className="w-4 h-4 text-amber-400 animate-bounce" />
-          <span>MINIJUEGO DE FRENADA Y APEX EN SILVERSTONE</span>
-        </div>
+    <div className="w-full space-y-4 text-center animate-fadeIn my-auto">
+      
+      <div className="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 text-amber-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase">
+        <Zap className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
+        <span>COMBINE DE PRECISIÓN EN EL APEX 🏎️</span>
+      </div>
 
-        <div className="max-w-xl mx-auto space-y-2">
-          <h2 className="font-display text-3xl sm:text-5xl font-black text-white uppercase">
-            PRUEBA DE PRECISIÓN EN EL APEX 🏎️
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-300">
-            Haz clic en <strong className="text-amber-400">"¡FRENAR AHORA!"</strong> cuando la aguja cruce la <span className="text-emerald-400 font-bold">ZONA DE FRENADA PERFECTA (88% - 96%)</span>.
-          </p>
-        </div>
+      <div className="space-y-1">
+        <h2 className="font-display font-black text-2xl text-white uppercase">
+          PRUEBA DE FRENADA
+        </h2>
+        <p className="text-xs text-slate-300">
+          Haz clic en <strong className="text-amber-400">"¡FRENAR AHORA!"</strong> al pasar por la <span className="text-emerald-400 font-bold">ZONA APEX (88%-96%)</span>.
+        </p>
+      </div>
 
-        {/* METER DISPLAY */}
-        <div className="bg-slate-950 border-2 border-slate-800 rounded-3xl p-6 space-y-5 max-w-lg mx-auto shadow-2xl relative overflow-hidden">
-          
-          <div className="relative w-full h-12 bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden flex items-center">
-            <div className="h-full bg-red-950/60 w-[70%]" />
-            <div className="h-full bg-amber-950/80 w-[18%]" />
-            <div className="h-full bg-emerald-500/80 w-[8%] flex items-center justify-center text-[10px] font-black text-black uppercase">
-              APEX 🎯
-            </div>
-            <div className="h-full bg-amber-950/80 w-[4%]" />
-
-            <div 
-              className="absolute top-0 bottom-0 w-3.5 bg-amber-400 border-2 border-white shadow-xl transition-all duration-75"
-              style={{ left: `${meterValue}%` }}
-            />
+      {/* Meter Box */}
+      <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-4 shadow-xl">
+        <div className="relative w-full h-10 bg-slate-900 rounded-xl border border-slate-700 overflow-hidden flex items-center">
+          <div className="h-full bg-red-950/60 w-[70%]" />
+          <div className="h-full bg-amber-950/80 w-[18%]" />
+          <div className="h-full bg-emerald-500/80 w-[8%] flex items-center justify-center text-[8px] font-black text-black uppercase">
+            APEX
           </div>
+          <div className="h-full bg-amber-950/80 w-[4%]" />
 
-          {score === null ? (
-            <div className="text-xs font-bold text-slate-400">
-              {isRunning ? '⚡ LA TELEMETRÍA SE MUEVE EN TIEMPO REAL...' : 'HAZ CLIC ABAJO PARA INICIAR LA VUELTA'}
-            </div>
-          ) : (
-            <div className={`p-4 rounded-2xl border text-sm font-bold animate-fadeIn ${
-              score >= 88 && score <= 96 
-                ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300' 
-                : score >= 70 
-                ? 'bg-amber-950/80 border-amber-500 text-amber-300' 
-                : 'bg-red-950/80 border-red-500 text-red-300'
-            }`}>
-              {score >= 88 && score <= 96 ? (
-                <div>🌟 ¡APEX PERFECTO! ({score}%). Frenada tardía impecable sin bloquear neumáticos. (+2 OVR)</div>
-              ) : score >= 70 ? (
-                <div>👍 BUEN TIEMPO ({score}%). Entrada limpia a la curva. (+1 OVR)</div>
-              ) : (
-                <div>⚠️ BLOQUEO DE FRENOS ({score}%). Plano en el neumático delantero. (-1 OVR)</div>
-              )}
-            </div>
+          <div 
+            className="absolute top-0 bottom-0 w-3 bg-amber-400 border border-white shadow-xl transition-all duration-75"
+            style={{ left: `${meterValue}%` }}
+          />
+        </div>
+
+        {score !== null && (
+          <div className={`p-3 rounded-xl border text-xs font-bold ${
+            score >= 88 && score <= 96 ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300' : 'bg-red-950/80 border-red-500 text-red-300'
+          }`}>
+            {score >= 88 && score <= 96 ? '🌟 ¡APEX PERFECTO! (+2 OVR)' : '⚠️ FRENADA TARDÍA (-1 OVR)'}
+          </div>
+        )}
+
+        <div className="pt-1">
+          {!isRunning && score === null && (
+            <button onClick={handleStart} className="w-full bg-amber-500 text-black font-display font-black text-sm uppercase py-3 rounded-xl shadow-lg">
+              INICIAR VUELTA ⏱️
+            </button>
           )}
 
-          <div className="flex flex-col gap-3 pt-2">
-            {!isRunning && score === null && (
-              <button
-                onClick={handleStart}
-                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 text-black font-display font-black text-lg uppercase py-3.5 rounded-2xl shadow-xl transition-all"
-              >
-                INICIAR VUELTA DE CLASIFICACIÓN ⏱️
-              </button>
-            )}
+          {isRunning && (
+            <button onClick={handleStop} className="w-full bg-emerald-500 text-black font-display font-black text-base uppercase py-3.5 rounded-xl shadow-xl animate-pulse">
+              ¡FRENAR AHORA! 🏎️💨
+            </button>
+          )}
 
-            {isRunning && (
-              <button
-                onClick={handleStop}
-                className="w-full bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-600 text-black font-display font-black text-xl uppercase py-4 rounded-2xl shadow-2xl animate-pulse transition-all"
-              >
-                ¡FRENAR AHORA! 🏎️💨
-              </button>
-            )}
-
-            {!isRunning && score !== null && (
-              <button
-                onClick={handleContinue}
-                className="w-full bg-amber-500 hover:bg-amber-400 text-black font-display font-black text-lg uppercase py-3.5 rounded-2xl shadow-xl transition-all inline-flex items-center justify-center gap-2"
-              >
-                <span>CONTINUAR AL MOTORSPORT DASHBOARD</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            )}
-          </div>
-
+          {!isRunning && score !== null && (
+            <button onClick={handleContinue} className="w-full bg-amber-500 text-black font-display font-black text-sm uppercase py-3 rounded-xl shadow-lg inline-flex items-center justify-center gap-1">
+              <span>CONTINUAR</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
-
       </div>
+
     </div>
   );
 };
